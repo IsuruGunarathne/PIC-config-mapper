@@ -21,5 +21,9 @@ steps:
   # Print the configuration template from the deployment repository
   - script: |
       cat Terraform/Azure/config/confTemplate.tfvars
+      mkdir Workspace
+      cp Terraform/Azure/config/confTemplate.tfvars Workspace/confTemplate.tfvars
+      cd Workspace
+      ls
     displayName: "Print configuration template"
 
