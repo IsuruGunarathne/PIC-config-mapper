@@ -23,7 +23,7 @@ steps:
       cat Terraform/Azure/config/confTemplate.tfvars
       mkdir Workspace
       cp Terraform/Azure/config/confTemplate.tfvars Workspace/confTemplate.tfvars
+      echo "Configuration template copied to Workspace directory"
       cd Workspace
       ls
-    displayName: "Print configuration template"
-
+    displayName: "Print configuration template and copy to workspace"
