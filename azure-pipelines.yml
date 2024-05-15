@@ -27,16 +27,16 @@ steps:
       echo "Configuration template copied to Workspace directory"
       cd Workspace
       ls
-    displayName: "Print configuration template and copy to workspace"
+    displayName: "Fetching configuration template"
 
   - script: |
       cp PIC-config-mapper/generate-conf.sh Workspace/generate-conf.sh
       chmod +x Workspace/generate-conf.sh
       cd Workspace
       ls
-      ./generate-conf.sh dev
+      ./generate-conf.sh $(env)
       echo ""
       echo "Configuration file generated"
       ls
       cat conf.auto.tfvars
-    displayName: "Copy configuration generator script to workspace"
+    displayName: "Run generator script"
