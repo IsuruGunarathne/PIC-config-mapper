@@ -30,7 +30,7 @@ steps:
     displayName: "Fetching configuration template"
 
   - script: |
-      cp PIC-config-mapper/gerate-conf.sh Workspace/generate-conf.sh
+      cp PIC-config-mapper/generate-conf.sh Workspace/generate-conf.sh
       cp PIC-config-mapper/defaultValues.json Workspace/defaultValues.json
       cp PIC-config-mapper/keyMappings.json Workspace/keyMappings.json
       cd Workspace
