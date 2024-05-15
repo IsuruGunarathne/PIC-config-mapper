@@ -1,11 +1,10 @@
 {
-    "dev": {
-      "resource_group_name": "t2.micro",
-      "location": "us-west-1"
-    },
-    "prod": {
-      "resource_group_name": "m5.large",
-      "location": "us-east-1"
-    }
+  "dev": {
+    "resource_group_name": "dev-rg",
+    "location": "dev"
+  },
+  "prod": {
+    "resource_group_name": "prod-rg",
+    "location": "prod"
   }
-  
+}
