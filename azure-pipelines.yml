@@ -34,4 +34,10 @@ steps:
       chmod +x Workspace/generate-conf.sh
       cd Workspace
       ls
+      echo ""
+      echo "Generator"
+      cat generate-conf.sh
+      echo ""
+      echo "Configuration template"
+      cat confTemplate.tfvars
     displayName: "Copy configuration generator script to workspace"
