@@ -28,3 +28,10 @@ steps:
       cd Workspace
       ls
     displayName: "Print configuration template and copy to workspace"
+
+  - script: |
+      cp PIC-config-mapper/generate-conf.sh Workspace/generate-conf.sh
+      chmod +x Workspace/generate-conf.sh
+      cd Workspace
+      ls
+    displayName: "Copy configuration generator script to workspace"
