@@ -16,7 +16,7 @@ steps:
   - checkout: self
 
   # Checkout the deployment repository
-  - checkout: deployment
+  - checkout: Terraform
 
   # Print the configuration template from the deployment repository
   - script: |
