@@ -1,19 +1,30 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  - main
+
+resources:
+  repositories:
+    - repository: Terraform
+      type: github
+      name: IsuruGunarathne/Terraform
+      endpoint: github.com_IsuruGunarathne
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # Checkout the current repository (default behavior)
+  - checkout: self
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  # Checkout the deployment repository
+  - checkout: deployment
+
+  # Print the configuration template from the deployment repository
+  - script: |
+      cat Terraform/Azure/config/confTemplate.tfvars
+    displayName: "Print configuration template"
+
+  # Run a multi-line script
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: "Run a multi-line script"
