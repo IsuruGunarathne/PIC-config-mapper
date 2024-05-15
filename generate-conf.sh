@@ -1,45 +1,51 @@
 #!/bin/bash
 
-# Check if environment parameter is provided
+# Check if the environment parameter is passed
 if [ -z "$1" ]; then
-  echo "Usage: $0 <environment>"
-  exit 1
+    echo "Usage: $0 <environment>"
+    exit 1
 fi
 
 ENVIRONMENT=$1
 
-# Define the values for each environment
-case $ENVIRONMENT in
-  dev)
-    VAR1="dev_value1"
-    VAR2="dev_value2"
-    ;;
-  prod)
-    VAR1="prod_value1"
-    VAR2="prod_value2"
-    ;;
-  staging)
-    VAR1="staging_value1"
-    VAR2="staging_value2"
-    ;;
-  *)
-    echo "Unknown environment: $ENVIRONMENT"
-    exit 1
-    ;;
-esac
-
-# Read the template file and replace placeholders
+# Filenames
 TEMPLATE_FILE="confTemplate.tfvars"
+DEFAULT_VALUES_FILE="defaultValues.json"
+KEY_MAPPINGS_FILE="keyMappings.json"
 OUTPUT_FILE="conf.auto.tfvars"
 
-if [ ! -f "$TEMPLATE_FILE" ]; then
-  echo "Template file $TEMPLATE_FILE does not exist."
-  exit 1
+# Check if the required files exist
+if [ ! -f "$TEMPLATE_FILE" ] || [ ! -f "$DEFAULT_VALUES_FILE" ] || [ ! -f "$KEY_MAPPINGS_FILE" ]; then
+    echo "Required file(s) not found!"
+    exit 1
 fi
 
-# Replace placeholders in the template and create the output file
-sed -e "s/test1/$VAR1/" \
-    -e "s/test2/$VAR2/" \
-    $TEMPLATE_FILE > $OUTPUT_FILE
+# Create an empty output file
+> $OUTPUT_FILE
+
+# Read the template file to get the keys
+TEMPLATE_KEYS=$(grep -oP '^\s*\K\w+' $TEMPLATE_FILE)
+
+# Iterate over each key and map to the appropriate value
+for KEY in $TEMPLATE_KEYS; do
+    # Get the corresponding key in the key mappings file for the environment
+    MAPPED_KEY=$(jq -r --arg env "$ENVIRONMENT" --arg key "$KEY" '.[$env][$key]' $KEY_MAPPINGS_FILE)
+    
+    if [ "$MAPPED_KEY" == "null" ]; then
+        echo "Mapping for key $KEY not found in $KEY_MAPPINGS_FILE for environment $ENVIRONMENT"
+        continue
+    fi
+    
+    # Get the value for the original key from the default values file
+    VALUE=$(jq -r --arg env "$ENVIRONMENT" --arg key "$KEY" '.[$env][$key]' $DEFAULT_VALUES_FILE)
+    
+    if [ "$VALUE" == "null" ]; then
+        echo "Value for key $KEY not found in $DEFAULT_VALUES_FILE for environment $ENVIRONMENT"
+        continue
+    fi
+    
+    # Write the mapped key-value pair to the output file
+    echo "$MAPPED_KEY = \"$VALUE\"" >> $OUTPUT_FILE
+done
 
 echo "Configuration file $OUTPUT_FILE generated successfully."
