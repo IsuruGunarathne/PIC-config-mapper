@@ -63,5 +63,5 @@ steps:
       cd PIC-config
       git add .
       git commit -m "Generated configuration for Azure"
-      git push
+      git push origin main
     displayName: "Push the generated configuration"
