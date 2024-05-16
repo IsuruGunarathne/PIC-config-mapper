@@ -54,17 +54,33 @@ steps:
     displayName: "Configure git"
 
   - script: |
-      mkdir PIC-config
-      mkdir PIC-config/Azure
+      mkdir -p PIC-config/Azure
       cp Workspace/conf.auto.tfvars PIC-config/Azure/conf.auto.tfvars
       cd PIC-config
-      echo "# PIC-config" >> README.md
-      git init
-      git add .
-      git commit -m "first commit"
-      git branch -M main
-      git remote add origin https://$(gitHubName):$(GITHUB_TOKEN)@github.com/IsuruGunarathne/PIC-config.git
-      git push -u origin main
+
+      # Check if the repository is empty
+      if git ls-remote https://$(gitHubName):$(GITHUB_TOKEN)@github.com/IsuruGunarathne/PIC-config.git | grep -q "refs/heads/main"; then
+        echo "Repository is not empty. Pulling latest changes."
+        git init
+        git remote add origin https://$(gitHubName):$(GITHUB_TOKEN)@github.com/IsuruGunarathne/PIC-config.git
+        git fetch origin
+        git checkout main
+        git pull origin main
+
+        # Update the file
+        cp ../Workspace/conf.auto.tfvars Azure/conf.auto.tfvars
+        git add Azure/conf.auto.tfvars
+        git commit -m "Update conf.auto.tfvars"
+        git push origin main
+      else
+        echo "Repository is empty. Initializing and pushing initial commit."
+        git init
+        git add .
+        git commit -m "first commit"
+        git branch -M main
+        git remote add origin https://$(gitHubName):$(GITHUB_TOKEN)@github.com/IsuruGunarathne/PIC-config.git
+        git push -u origin main
+      fi
     displayName: "Push the generated configuration"
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
