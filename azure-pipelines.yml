@@ -23,10 +23,6 @@ steps:
   # Checkout the deployment repository
   - checkout: Terraform
 
-  # Checkout the configuration repository
-  - checkout: PIC-config
-    persistCredentials: "true"
-
   # Print the configuration template from the deployment repository
   - script: |
       cat Terraform/Azure/config/confTemplate.tfvars
@@ -58,10 +54,15 @@ steps:
     displayName: "Configure git"
 
   - script: |
+      mkdir PIC-config
       mkdir PIC-config/Azure
       cp Workspace/conf.auto.tfvars PIC-config/Azure/conf.auto.tfvars
       cd PIC-config
+      echo "# PIC-config" >> README.md
+      git init
       git add .
-      git commit -m "Generated configuration for Azure"
-      git push origin main
+      git commit -m "first commit"
+      git branch -M main
+      git remote add origin https://github.com/IsuruGunarathne/PIC-config.git
+      git push -u origin main
     displayName: "Push the generated configuration"
