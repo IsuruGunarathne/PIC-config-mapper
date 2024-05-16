@@ -63,6 +63,8 @@ steps:
       git add .
       git commit -m "first commit"
       git branch -M main
-      git remote add origin https://github.com/IsuruGunarathne/PIC-config.git
+      git remote add origin https://$(gitHubName):$(GITHUB_TOKEN)@github.com/IsuruGunarathne/PIC-config.git
       git push -u origin main
     displayName: "Push the generated configuration"
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
