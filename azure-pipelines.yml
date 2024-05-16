@@ -8,6 +8,11 @@ resources:
       name: IsuruGunarathne/Terraform
       endpoint: github.com_IsuruGunarathne
 
+    - repository: PIC-config
+      type: github
+      name: IsuruGunarathne/PIC-config
+      endpoint: github.com_IsuruGunarathne
+
 pool:
   vmImage: ubuntu-latest
 
@@ -17,6 +22,10 @@ steps:
 
   # Checkout the deployment repository
   - checkout: Terraform
+
+  # Checkout the configuration repository
+  - checkout: PIC-config
+    persistCredentials: "true"
 
   # Print the configuration template from the deployment repository
   - script: |
@@ -42,3 +51,17 @@ steps:
       cd Workspace
       cat conf.auto.tfvars
     displayName: "Print the generated configuration"
+
+  - script: |
+      git config --global user.email $(gitHubEmail)
+      git config --global user.name $(gitHubName)
+    displayName: "Configure git"
+
+  - script: |
+      mkdir PIC-config/Azure
+      cp Workspace/conf.auto.tfvars PIC-config/Azure/conf.auto.tfvars
+      cd PIC-config
+      git add .
+      git commit -m "Generated configuration for Azure"
+      git push
+    displayName: "Push the generated configuration"
