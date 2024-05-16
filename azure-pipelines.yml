@@ -55,7 +55,6 @@ steps:
 
   - script: |
       mkdir -p PIC-config/Azure
-      cp Workspace/conf.auto.tfvars PIC-config/Azure/conf.auto.tfvars
       cd PIC-config
 
       # Check if the repository is empty
@@ -75,6 +74,7 @@ steps:
       else
         echo "Repository is empty. Initializing and pushing initial commit."
         git init
+        cp ../Workspace/conf.auto.tfvars Azure/conf.auto.tfvars
         git add .
         git commit -m "first commit"
         git branch -M main
