@@ -17,6 +17,10 @@ OUTPUT_FILE="conf.auto.tfvars"
 # Check if the required files exist
 if [ ! -f "$TEMPLATE_FILE" ] || [ ! -f "$DEFAULT_VALUES_FILE" ] || [ ! -f "$KEY_MAPPINGS_FILE" ]; then
     echo "Required file(s) not found!"
+    echo "Following are the missing files:"
+    [ ! -f "$TEMPLATE_FILE" ] && echo "$TEMPLATE_FILE"
+    [ ! -f "$DEFAULT_VALUES_FILE" ] && echo "$DEFAULT_VALUES_FILE"
+    [ ! -f "$KEY_MAPPINGS_FILE" ] && echo "$KEY_MAPPINGS_FILE"
     exit 1
 fi
 
