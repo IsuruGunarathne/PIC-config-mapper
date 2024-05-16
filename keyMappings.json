@@ -1,7 +1,7 @@
 {
   "dev": {
-    "resource_group_name": "resource_group_name_dev",
-    "location": "location_dev"
+    "resource_group_name": "resource_group_name",
+    "location": "location"
   },
   "prod": {
     "resource_group_name": "resource_group_name_prod",
