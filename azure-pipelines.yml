@@ -8,10 +8,10 @@ resources:
       name: IsuruGunarathne/Terraform
       endpoint: github.com_IsuruGunarathne
 
-    - repository: PIC-config
-      type: github
-      name: IsuruGunarathne/PIC-config
-      endpoint: github.com_IsuruGunarathne
+    # - repository: PIC-config
+    #   type: github
+    #   name: IsuruGunarathne/PIC-config
+    #   endpoint: github.com_IsuruGunarathne
 
 pool:
   vmImage: ubuntu-latest
